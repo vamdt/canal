@@ -114,7 +114,7 @@ public class MysqlConnection implements ErosaConnection {
         loadBinlogChecksum();
         sendBinlogDump(binlogfilename, binlogPosition);
         DirectLogFetcher fetcher = new DirectLogFetcher(connector.getReceiveBufferSize());
-        fetcher.start(connector.getChannel());
+        fetcher.start(connector.getReadableByteChannel());
         LogDecoder decoder = new LogDecoder(LogEvent.UNKNOWN_EVENT, LogEvent.ENUM_END_EVENT);
         LogContext context = new LogContext();
         context.setLogPosition(new LogPosition(binlogfilename));

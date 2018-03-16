@@ -5,6 +5,7 @@ import java.io.InterruptedIOException;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedByInterruptException;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class DirectLogFetcher extends LogFetcher {
     /** Maximum packet length */
     public static final int       MAX_PACKET_LENGTH = (256 * 256 * 256 - 1);
 
-    private SocketChannel         channel;
+    private ReadableByteChannel   channel;
 
     // private BufferedInputStream input;
 
@@ -52,7 +53,7 @@ public class DirectLogFetcher extends LogFetcher {
         super(initialCapacity, growthFactor);
     }
 
-    public void start(SocketChannel channel) throws IOException {
+    public void start(ReadableByteChannel channel) throws IOException {
         this.channel = channel;
         // 和mysql driver一样，提供buffer机制，提升读取binlog速度
         // this.input = new

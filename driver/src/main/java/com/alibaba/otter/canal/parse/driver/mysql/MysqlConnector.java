@@ -1,8 +1,11 @@
 package com.alibaba.otter.canal.parse.driver.mysql;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -319,6 +322,17 @@ public class MysqlConnector {
 
     public void setChannel(SocketChannel channel) {
         this.channel = channel;
+    }
+
+    public ReadableByteChannel getReadableByteChannel() {
+        InputStream inputStream = null;
+        try {
+            inputStream = this.channel.socket().getInputStream();
+        } catch (IOException e) {
+            logger.warn("connect error", e);
+            throw new RuntimeException(e);
+        }
+        return Channels.newChannel(inputStream);
     }
 
     public void setPassword(String password) {
